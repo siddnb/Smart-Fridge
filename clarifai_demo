@@ -1,0 +1,47 @@
+// Adapted from Clarifai github https://github.com/Clarifai/clarifai-nodejs-grpc/tree/f8ca612f1e957fc0c25e8c5b679b6c500e8b2df7
+// API trained using convolutional neural networks
+// Can classify over 500 items
+const {ClarifaiStub, grpc} = require("clarifai-nodejs-grpc");
+const fs = require("fs");
+
+const stub = ClarifaiStub.grpc();
+
+const imageBytes = fs.readFileSync("Tomato_je.jpeg");
+// const imageBytes = fs.readFileSync("chicken.jpeg");
+// const imageBytes = fs.readFileSync("bunch.webp");
+
+const metadata = new grpc.Metadata();
+metadata.set("authorization", "Key d97dc8ba72744eb6b31cabbd6e2eba60");
+
+
+stub.PostModelOutputs(
+    {
+        model_id: "food-item-recognition",
+        inputs: [{data: {image: {base64: imageBytes}}}]
+    },
+    metadata,
+    (err, response) => {
+        if (err) {
+            console.log("Error: " + err);
+            return;
+        }
+
+        if (response.status.code !== 10000) {
+            console.log("Received failed status: " + response.status.description + "\n" + response.status.details);
+            return;
+        }
+
+        let bestGuessConfidence = response.outputs[0].data.concepts[0].value
+        console.log("The image being classified is Tomato.jpeg");
+        console.log("Predicted concepts, with confidence values:");
+        for (const c of response.outputs[0].data.concepts) {
+            //Show only the highest guesses
+            // if(c.value>=bestGuessConfidence-.2){
+                console.log(c.name + ": " + c.value);
+            // }
+            // else{
+            //     break;
+            // }
+        }
+    }
+);

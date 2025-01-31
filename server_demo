@@ -1,0 +1,75 @@
+const express = require('express');
+
+// Set up server
+const app = express();
+const port = 3000;
+
+// Temporary "database"
+let ingredientsDb = {
+    "apple":{quantity: 5, img:"apple/path"},
+    "banana":{quantity: 2, img:"banana/path"}
+} 
+let recipesDb = {
+    "cake":{ingredients: ["flour", "eggs", "sugar", "water", "baking powder"],img:"cake/path"},
+    "omlette":{ingredients: ["eggs"]},img:"omlette/path"
+}
+
+// Start server
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}/`);
+});
+
+// Serves the requests at the '/ingredients' endpoint
+app.route('/ingredients')
+.get((req, res) => {
+    // Returns a JSON object for each ingredient, with their corresponding Quantity and images
+    let data = {};
+
+    for(const [key,value] of Object.entries(ingredientsDb)){
+        data[key]= value;
+    }
+
+    res.json(data);
+})
+.post((req, res) => {
+    // Uploads an ingredient label with an associated image to the backend;
+    let ingredient = req.body;
+
+    ingredientsDb[ingredient.name] = ingredient.value;
+
+    res.json("Successfully added "+ingredient.name);
+})
+.patch((req, res) => {
+    // Updates the quantity of an ingredient
+    let ingredient = req.body;
+
+    ingredientsDb[ingredient.name] = ingredient.value;
+
+    res.json("Successfully updated "+ingredient.name);
+})
+
+// Serves the requests at the '/ingredients/:ingredient' endpoint
+app.route('/ingredients/:ingredient')
+.delete((req, res) => {
+    // Deletes an ingredient
+    delete ingredientsDb[req.params.ingredient];
+
+    res.json("Successfully deleted "+req.params.ingredient);
+})
+
+// Serves the requests at the '/recipes' endpoint
+app.route('/recipes')
+// Returns a JSON object for each stored recipe and image
+.get((req, res) => {
+    let data = {};
+
+    for(const [key,value] of Object.entries(recipesDb)){
+        data[key]= value;
+    }
+
+    res.json(data);
+})
+
+
+// GET RecipesAndMissingIngredients();
+// Gets a list of recipes sorted by fewest number of ingredients missing, with the associated missing ingredients
