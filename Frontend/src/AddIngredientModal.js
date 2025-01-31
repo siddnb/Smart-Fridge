@@ -11,9 +11,9 @@ const AddIngredientModal = ({ onClose }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (quantity <= 0) {
-      return;
-    }
+    // if (quantity <= 0) {
+    //   return;
+    // }
     await AddIngredient(ingredientName, quantity, measurement);
     onClose();
 
@@ -60,13 +60,7 @@ const AddIngredientModal = ({ onClose }) => {
             </div>
             <div className="modal-buttons">
               <button type="button" onClick={onClose} className="close-btn">Close</button>
-              <button type="submit" className='submit-btn' onClick={() => {
-                  if (quantity > 0) {
-                  onClose();
-                } else {
-                  document.getElementById("quantity").style.color = "red";
-                }
-              }}>Submit</button>
+              <button type="submit" className='submit-btn'>Submit</button>
             </div>
           </form>
         </div>

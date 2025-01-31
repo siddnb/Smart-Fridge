@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ReactDom from "react-dom";
-import { UpdateQuantity, RemoveIngredient, GetRecipesAndMissingIngredients, GetStoredRecipes } from './Service';
+import { UpdateQuantity, RemoveIngredient, AddIngredient, GetRecipesAndMissingIngredients, GetStoredRecipes } from './Service';
 
 
 import './NewIngredientModal.css'
@@ -8,6 +8,7 @@ import './NewIngredientModal.css'
 const NewIngredientModal = ({ onClose, ingredient }) => {
 
   const [quantity, setQuantity] = useState(ingredient.quantity);
+  const [name, setName] = useState(ingredient.name);
   const [measurement, setMeasurement] = useState(ingredient.measurement);
 
   const handleSubmit = async (event) => {
@@ -15,8 +16,14 @@ const NewIngredientModal = ({ onClose, ingredient }) => {
     if (quantity <= 0) {
       return;
     }
-    await UpdateQuantity(ingredient.name, quantity, measurement);
-    onClose();
+    if (name !== ingredient.name) {
+      await RemoveIngredient(ingredient.name);
+      await AddIngredient(name, quantity, measurement);
+      onClose();
+    } else {
+      await UpdateQuantity(name, quantity, measurement);
+      onClose();
+    }
   };
 
   const removeIngredient = async (event) => {
@@ -36,10 +43,18 @@ const NewIngredientModal = ({ onClose, ingredient }) => {
     <div className="container" ref={modalRef} onClick={closeModal}>
       <div className="modal">
         <div className="modal-content">
-          <h2 className="modal-title">{ingredient.name}</h2>
+          <h2 className="modal-title">New Ingredient</h2>
           <img className="modal-image" src={ingredient.image} alt={ingredient.name} />
           <form onSubmit={handleSubmit}>
             <div className="form-group">
+            <label htmlFor="quantity">Ingredient: </label>
+              <input
+                type="string"
+                id="newIngName"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+              <br></br>
               <label htmlFor="quantity">Quantity: </label>
               <input
                 type="number"

@@ -9,17 +9,27 @@ const bodyParser = require('body-parser')
 const {convert} = require('./pixelToPic.js');
 const { WebSocketServer } = require('ws')
 
+
+
+
+apiKey="67a5396660df4868a1f36b4011f25c24"
+///////apiKey="99c4596a24844308ae645bee22a676d2"
+//apiKey="c9fefe6894b847a980540960bb936c9d"
+//apiKey="817018ab5c2c462cbb7fdf8850f97da2a"
+////apiKey="697ed0e771ea4cde9919079e826a5c9c"
+//apiKey="7417dd715f66430280c8b67261e045a8"
+
 var defaultClient = SpoonacularApi.ApiClient.instance;
 // Configure API key authorization: apiKeyScheme
-apiKey = "7d029bd5f6744733a8578d51893b56c5"
-//apiKey="697ed0e771ea4cde9919079e826a5c9c"
-//apiKey="7417dd715f66430280c8b67261e045a8"
+//apiKey="a42cceca10444f9a95a81fa234c3d766"
+
+
+//apiKey = "7d029bd5f6744733a8578d51893b56c5"
 //apiKey="0fceec329d654956a4251d405c772bce"
 //apiKey="16e45bef6fde4b53b74090c4daa06697"
 //apiKey="9af7b0716aed43a2b93fc53dfe707c28"
 //apiKey="e265615a73c94baab6c593b6f88c52e5"
 //apiKey="e5dea30fe1d34972b97390508ef08542"
-//apiKey="a42cceca10444f9a95a81fa234c3d766"
 // Demo of spoonacular
 
 // Set up server
@@ -48,7 +58,7 @@ ws.send('connection established')
 ws.on('close', () => console.log('Client has disconnected!'))
 ws.on('message', data => {
     data=data.toString()
-    if(!data.endsWith("00000000000000000000000000000000000000000000000000000000000000000000")){
+    if(!data.endsWith("0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")){
         imgBuffer+=data;
         console.log(data);
         reqCount++;
@@ -57,6 +67,8 @@ ws.on('message', data => {
     }
 
     console.log(data);
+
+    imgBuffer+=data;
 
     //MIGHT NEED TO APPEND THIS LAST PART TO THE IMAGE BUFFER AS WELL
 
@@ -231,14 +243,14 @@ app.route('/api/ingredients/:ingredient')
         let instructions=[];
         if(instructionstemp[0]!==undefined){
             console.log(instructionstemp[0].steps);
-            instructions = instructionstemp[0].steps.map(({step,newline})=> [step.replace(/'/g,""),"\n"]);
+            instructions = instructionstemp[0].steps.map(({step,newline})=> [step.replaceAll("'",""),"\n"]);
         }
         recipeArr.push({
-            recipeName: i.title.replace(/'/g,""),
+            recipeName: i.title.replaceAll("'",""),
             numIngredients: i.usedIngredientCount,
             ingredientList: i.usedIngredients.map(({ name,amount,unit}) => [name, amount,unit]),
             recipeID: i.id,
-            recipeImage: i.image.replace(/'/g,""),
+            recipeImage: i.image.replaceAll("'",""),
             instructions: instructions
         });
 
@@ -383,14 +395,14 @@ app.route('/api/recipes')
         });
         let instructions=[];
         if(instructionstemp[0]!==undefined){
-            instructions = instructionstemp[0].steps.map(({step,newline})=> [step.replace(/'/g,""),"\n"]);
+            instructions = instructionstemp[0].steps.map(({step,newline})=> [step.replaceAll("'",""),"\n"]);
         }
         recipeArr.push({
-            recipeName: i.title.replace(/'/g,""),
+            recipeName: i.title.replaceAll("'",""),
             numIngredients: i.usedIngredientCount,
             ingredientList: i.usedIngredients.map(({ name,amount,unit}) => [name, amount,unit]),
             recipeID: i.id,
-            recipeImage: i.image.replace(/'/g,""),
+            recipeImage: i.image.replaceAll("'",""),
             instructions: instructions
         });
 
@@ -424,7 +436,7 @@ var temp;
 let recipeArr = [];
 var getRecipes =async () => {
 
-const response=await fetch('https://api.spoonacular.com/recipes/findByIngredients?apiKey='+apiKey+'&ingredients='+ings+'&number=30&limitLicense=true&ranking=2&ignorePantry=true');
+const response=await fetch('https://api.spoonacular.com/recipes/findByIngredients?apiKey='+apiKey+'&ingredients='+ings+'&number=5&limitLicense=true&ranking=2&ignorePantry=true');
 const datas=await response.json();
 return datas.filter((item) => {
    return item.missedIngredientCount != 0;
@@ -445,7 +457,7 @@ for(let i of temp){
     // console.log(i.missedIngredients);
     missingingarray.push({
         missedingredients: i.missedIngredients.map(({ name,image,amount,unit}) => [name, image, amount,unit]),
-        recipeTitle: i.title.replace(/'/g,"")
+        recipeTitle: i.title.replaceAll("'","")
     });
    
 }
@@ -458,7 +470,7 @@ for(let i of missingingarray){
         if(i.missedingredients[0][0]===j.ingredientName){
             bool=true;
             j.count+=1;
-            j.recipeTitle.push(i.recipeTitle.replace(/'/g,""));
+            j.recipeTitle.push(i.recipeTitle.replaceAll("'",""));
             break;
         }
     }
@@ -468,7 +480,7 @@ for(let i of missingingarray){
         }
         //console.log(i.recipeTitle);
         let rectitlearr=[];
-        rectitlearr.push(i.recipeTitle.replace(/'/g,""));
+        rectitlearr.push(i.recipeTitle.replaceAll("'",""));
         uniquearr.push({
             ingredientName: i.missedingredients[0][0],
             ingredientsImage: i.missedingredients[0][1],
@@ -536,14 +548,14 @@ async function addIng(newIngredient){
         });
         let instructions=[];
         if(instructionstemp[0]!==undefined){
-            instructions = instructionstemp[0].steps.map(({step,newline})=> [step.replace(/'/g,""),"\n"]);
+            instructions = instructionstemp[0].steps.map(({step,newline})=> [step.replaceAll("'",""),"\n"]);
         }
         recipeArr.push({
-            recipeName: i.title.replace(/'/g,""),
+            recipeName: i.title.replaceAll("'",""),
             numIngredients: i.usedIngredientCount,
             ingredientList: i.usedIngredients.map(({ name,amount,unit,id}) => [name, amount,unit,id]),
             recipeID: i.id,
-            recipeImage: i.image.replace(/'/g,""),
+            recipeImage: i.image.replaceAll("'",""),
             instructions: instructions
         });
 
@@ -587,8 +599,13 @@ async function addIng(newIngredient){
         newIngredient.image='https://spoonacular.com/cdn/ingredients_100x100/'+tempings.results[0].image;
         newIngredient.id=tempings.results[0].id;
     }
-
-    db.addingredient(newIngredient.ingredient, newIngredient.quantity, newIngredient.id, newIngredient.image, newIngredient.measurement);
+    try{
+        db.addingredient(newIngredient.ingredient, newIngredient.quantity, newIngredient.id, newIngredient.image, newIngredient.measurement);
+    }
+    catch(err){
+        console.log(err);
+    }
+    
 
     console.log("Added "+newIngredient.ingredient +" with ID "+newIngredient.id);
 }

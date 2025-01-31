@@ -91,10 +91,10 @@ const WhatToCook = () => {
                 quan = 330*ingredient.quantity;
               } else if (ingredient.units == "pcs" || ingredient.units == "serving" || ingredient.units == "c" || ingredient.units == "stick" || ingredient.units == "Handful") {
                 measure = "pc";
-              } else if (ingredient.units == "teaspoon") {
+              } else if (ingredient.units == "teaspoon" || ingredient.units == "tsp") {
                 measure = "mL";
                 quan = 5*ingredient.quantity;
-              } else if (ingredient.units == "Tbs") {
+              } else if (ingredient.units == "Tbs" || ingredient.units == "Tbsp" || ingredient.units == "tablespoon" || ingredient.units == "Tbsps") {
                 measure = "mL";
                 quan = 15*ingredient.quantity;
               } else if (ingredient.units == "oz" || ingredient.units == "ounce" || ingredient.units == "Ounces" || ingredient.units == "Oz") {
